@@ -29,3 +29,12 @@ enemy = new Image();
 hero = new Image();
 
 _tile = [];
+
+  draw(){
+    this.clear();
+    for(let c=0; c<this.tileColumnCount; c++){
+      for(let r=0; r<this.tileRowCount; r++){
+        this.rect(this._tile[c][r].x, this._tile[c][r].y, this.tileW, this.tileH, this._tile[c][r].state);
+      }
+    }
+  }
