@@ -6,9 +6,9 @@ class App extends Component {
   render() {
     return (
       <div className="App" tabIndex={0} onKeyDown={this.handleKeyPress}>
-        <div>
-        <canvas ref={this.canvasRef} width={this.WIDTH} height={this.HEIGHT} />
-      </div>
+        <div className="box">
+          <canvas ref={this.canvasRef} width={this.WIDTH} height={this.HEIGHT} />
+        </div>
       </div>
     );
   }
@@ -35,9 +35,9 @@ _tile = [];
     this.canvasRef = React.createRef();
     this.handleKeyPress = this.handleKeyPress.bind(this);
 
-    let input = prompt("Please enter board height");
+    let input = prompt("Enter desired board height");
     this.tileRowCount = parseInt(input);
-    input = prompt("Please enter board width");
+    input = prompt("Enter desired board width");
     this.tileColumnCount = parseInt(input);
   }
 
@@ -207,16 +207,12 @@ _tile = [];
 
     removeGreenSprite(){
       this.countGreenSprites--;
-      alert(this.countGreenSprites);
-      if(this.countGreenSprites === 0){
-      alert(`Game Over: Total moves to save Princess: ${this.moves}`);
-      }
     }
 
     rect(x,y,w,h,state){
       if(state === "s"){
         this.hero = new Image();
-        this.hero.src = "images/mario.png";
+        this.hero.src = "images/johnson.jpg";
         this.hero.onload=()=>{
           this._ctx.drawImage(this.hero,x,y,w,h);
         }
@@ -229,7 +225,7 @@ _tile = [];
         this._ctx.stroke();
       }else if(state === 'w'){
         this.enemy = new Image();
-        this.enemy.src = "images/enemy.png";
+        this.enemy.src = "images/hb.png";
         this.enemy.onload=()=>{
           this._ctx.drawImage(this.enemy,x,y,w,h);
         };
