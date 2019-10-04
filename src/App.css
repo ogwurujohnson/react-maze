@@ -1,4 +1,12 @@
 .App {
   background: #0e1f1f;
-  height: 100vh;
+  min-height: 100vh;
+  
+  color: white;
+  padding: 10px;
+  display: flex;
+}
+
+.h3 {
+
 }
