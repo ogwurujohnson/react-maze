@@ -12,3 +12,20 @@ class App extends Component {
       </div>
     );
   }
+
+WIDTH = window.innerWidth;
+HEIGHT = window.innerHeight;
+
+tileW = 30;
+tileH = 30;
+
+tileRowCount = 0;
+tileColumnCount = 0;
+
+moves = 0;
+countGreenSprites = 0;
+
+enemy = new Image();
+hero = new Image();
+
+_tile = [];
