@@ -30,6 +30,24 @@ hero = new Image();
 
 _tile = [];
 
+  constructor(props){
+    super(props);
+    this.canvasRef = React.createRef();
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+
+    let input = prompt("Please enter board height");
+    this.tileRowCount = parseInt(input);
+    input = prompt("Please enter board width");
+    this.tileColumnCount = parseInt(input);
+  }
+
+  componentDidMount() {
+    this._canvas = this.canvasRef.current;
+    this._ctx = this._canvas.getContext("2d");
+    this.setTiles();
+    this.draw();
+  }
+
   setTiles(){
     //generate empty tiles
     for(let c=0; c<this.tileColumnCount; c++){
@@ -71,3 +89,157 @@ _tile = [];
       }
     }
   }
+
+  handleKeyPress(e){
+    e.preventDefault();
+    // down arrow key
+    if(e.nativeEvent.keyCode === 40){
+      for(let c=0; c<this.tileColumnCount; c++){
+        for(let r=0; r<this.tileRowCount; r++){
+            if(this._tile[c][r].state === "s"){
+              if(r<this.tileRowCount){
+                this.newEmptyPosition(c,r);
+                r++;
+              if(r !== this.tileRowCount){
+                this.moves++;
+                if(this._tile[c][r].state === "w"){
+                  this.removeGreenSprite();
+                }
+                this.newStartPosition(c,r);
+              }else{
+                r--;
+                this.newStartPosition(c,r);
+              }
+              break;
+            }
+          }
+          }
+        }
+      }
+      // up arrow key
+      else if(e.nativeEvent.keyCode === 38){
+        for(let c=0; c<this.tileColumnCount; c++){
+          for(let r=0; r<this.tileRowCount; r++){
+              if(this._tile[c][r].state === "s"){
+                if(r>0){
+                  this.newEmptyPosition(c,r)
+                  r--;
+                  if(r !== 0){
+                    this.moves++;
+                    if(this._tile[c][r].state === "w"){
+                      this.removeGreenSprite();
+                    }
+                    this.newStartPosition(c,r);
+                  }else{
+                    this.newStartPosition(c,r)
+                  }
+                  break;
+                }
+              }
+            }
+          }
+        }
+        // right arrow key
+        else if(e.nativeEvent.keyCode === 39){
+          for(let c=0; c<this.tileColumnCount; c++){
+            for(let r=0; r<this.tileRowCount; r++){
+
+                if(this._tile[c][r].state === "s"){
+
+                  if(c<this.tileColumnCount){
+                    this.newEmptyPosition(c,r);
+                    c++;
+
+                    if(c !== this.tileColumnCount){
+                      this.moves++;
+                      if(this._tile[c][r].state === "w"){
+                        this.removeGreenSprite();
+                      }
+                      this.newStartPosition(c,r);
+                    }else{
+                      c--;
+                      this.newStartPosition(c,r);
+                    }
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          // left arrow key
+          else if(e.nativeEvent.keyCode === 37){
+            for(let c=0; c<this.tileColumnCount; c++){
+              for(let r=0; r<this.tileRowCount; r++){
+                  if(this._tile[c][r].state === "s"){
+                    if(c>0){
+                      this.newEmptyPosition(c,r);
+                      c--;
+                      if(c !== 0){
+                        this.moves++;
+                        if(this._tile[c][r].state === "w"){
+                          this.removeGreenSprite();
+                        }
+                      this.newStartPosition(c,r);
+                      }else{
+                        this.newStartPosition(c,r);
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+    }
+
+    newStartPosition(c, r){
+      this._tile[c][r].state = "s";
+      let x = this._tile[c][r].x;
+      let y = this._tile[c][r].y;
+      this.rect(x,y,this.tileW,this.tileH,"s");
+    }
+
+    newEmptyPosition(c,r){
+      this._tile[c][r].state = "e";
+      let x = this._tile[c][r].x;
+      let y = this._tile[c][r].y;
+      this.rect(x,y,this.tileW,this.tileH,"e");
+    }
+
+    removeGreenSprite(){
+      this.countGreenSprites--;
+      alert(this.countGreenSprites);
+      if(this.countGreenSprites === 0){
+      alert(`Game Over: Total moves to save Princess: ${this.moves}`);
+      }
+    }
+
+    rect(x,y,w,h,state){
+      if(state === "s"){
+        this.hero = new Image();
+        this.hero.src = "images/mario.png";
+        this.hero.onload=()=>{
+          this._ctx.drawImage(this.hero,x,y,w,h);
+        }
+      }else if(state === 'e'){
+        this._ctx.fillStyle = "#FFFFFF";
+        this._ctx.beginPath();
+        this._ctx.rect(x,y,w,h);
+        this._ctx.closePath();
+        this._ctx.fill();
+        this._ctx.stroke();
+      }else if(state === 'w'){
+        this.enemy = new Image();
+        this.enemy.src = "images/enemy.png";
+        this.enemy.onload=()=>{
+          this._ctx.drawImage(this.enemy,x,y,w,h);
+        };
+      }
+    }
+
+    clear(){
+      this._ctx.clearRect(0,0,this.WIDTH,this.HEIGHT);
+    }
+
+}
+
+export default App;
